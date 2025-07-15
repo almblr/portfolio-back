@@ -30,7 +30,7 @@ export default (app) => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());
-  app.use('/portfolio', email);
+  app.use('/api/v1', email);
 
   // catch 404 and forward to error handler
   app.use(function (req, res, next) {
