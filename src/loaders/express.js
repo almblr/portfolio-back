@@ -2,7 +2,7 @@ import createError from 'http-errors'
 import cors from 'cors'
 import express from 'express'
 import cookieParser from 'cookie-parser'
-import logger from 'morgan'
+import morgan from 'morgan'
 import dotenv from 'dotenv'
 import email from '../routes/emailRoute.js'
 
@@ -26,11 +26,12 @@ export default (app) => {
   }));
 
 
-  app.use(logger('dev'));
+  app.use(morgan(':date :method :url :status :response-time ms'));
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());
-  app.use('/portfolio', email);
+
+  app.use('/api', email);
 
   // catch 404 and forward to error handler
   app.use(function (req, res, next) {

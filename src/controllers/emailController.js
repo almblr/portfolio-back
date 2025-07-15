@@ -4,8 +4,8 @@ const emailConstroller = {
     sendEmail: async (req, res) => {
     try {
       const { email, message } = req.body
-      await sendEmail(email, message)
-      return res.status(200).json({ success: true })
+      const response = await sendEmail(email, message)
+      return res.status(200).json({ emailId: response.id })
     } catch (error) {
         console.log(error);
     }
