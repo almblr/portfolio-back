@@ -1,5 +1,7 @@
 import { google } from 'googleapis'
 import process from 'process';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const clientId = process.env.GOOGLE_CLIENT_ID
 const clientSecret = process.env.GOOGLE_CLIENT_SECRET
@@ -15,9 +17,9 @@ async function authorize() {
       client_secret: clientSecret,
       refresh_token: refreshToken,
     }
-    console.log(credentials);
     const client = google.auth.fromJSON(credentials)
     return client
+    return 'toto'
   } catch (error) {
     console.log(error)
   }
@@ -68,21 +70,21 @@ export const createMimeMessage = async (email, body) => {
 export const sendEmail = async (subject="bonjour", body="") => {
   try {
     const auth = await authorize();
-    // const gmail = google.gmail({ auth, version: 'v1' });
-    // const utf8Subject = `=?utf-8?B?${Buffer.from(subject).toString('base64')}?=`;
-    // const message = await createMimeMessage(utf8Subject, body);
-    // const encodedMessage = Buffer.from(message)
-    //   .toString('base64')
-    //   .replace(/\+/g, '-')
-    //   .replace(/\//g, '_')
-    //   .replace(/=+$/, '');
+    const gmail = google.gmail({ auth, version: 'v1' });
+    const utf8Subject = `=?utf-8?B?${Buffer.from(subject).toString('base64')}?=`;
+    const message = await createMimeMessage(utf8Subject, body);
+    const encodedMessage = Buffer.from(message)
+      .toString('base64')
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
 
-    // const res = await gmail.users.messages.send({
-    //   userId: 'me',
-    //   requestBody: {
-    //     raw: encodedMessage,
-    //   },
-    // });
+    const res = await gmail.users.messages.send({
+      userId: 'me',
+      requestBody: {
+        raw: encodedMessage,
+      },
+    });
     console.log('Message ID:', res.data.id);
   } catch (error) {
     console.log('Failed to send message :', error.response?.data || error);
