@@ -30,7 +30,12 @@ export default (app) => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());
-  app.use('/.netlify/functions/api/v1', email);
+  // app.use('/.netlify/functions/api/v1', email);
+  app.use('/.netlify/functions/api/v1', (req, res) => {
+    res.json({
+      message: "hello there"
+    })
+  });
 
   // catch 404 and forward to error handler
   app.use(function (req, res, next) {
