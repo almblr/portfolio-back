@@ -23,7 +23,7 @@ async function authorize() {
   }
 }
 
-export const createMimeMessage = async (email, body) => {
+export const createMimeMessage = async (name, email, body) => {
   const messageParts = [
     `From: Moi <${personalEmail}>`,
     `To: <${personalEmail}>`,
@@ -34,7 +34,7 @@ export const createMimeMessage = async (email, body) => {
     '--boundary',
     'Content-Type: text/html; charset=utf-8',
     '',
-    body,
+    `${body}<br><br>Message envoyé par : ${name}`,
     '',
     '--boundary--'
   ]
