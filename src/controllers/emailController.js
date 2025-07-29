@@ -5,9 +5,13 @@ const emailConstroller = {
     try {
       const { name, email, message } = req.body
       const response = await sendEmail(name, email, message)
-      return res.status(200).json({ emailId: response.id })
+      if(!response) {
+        return res.status(500).json({ message: 'Email service responded with failure' })
+      }
+      return res.status(200).json({ message: 'Mail sent successfully' })
     } catch (error) {
         console.log(error);
+         return res.status(500).json({ error: 'Internal Server Error' })
     }
   },
 }

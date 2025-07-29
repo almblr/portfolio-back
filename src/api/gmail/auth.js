@@ -6,6 +6,11 @@ import fs from 'fs/promises';
 import path from 'path';
 
 dotenv.config();
+const clientId = process.env.GOOGLE_CLIENT_ID
+const clientSecret = process.env.GOOGLE_CLIENT_SECRET
+const refreshToken = process.env.GOOGLE_REFRESH_TOKEN
+
+// For fully authorized with token generation, refer to https://github.com/googleworkspace/node-samples/blob/main/gmail/quickstart/index.js
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/gmail.send'];
@@ -22,8 +27,14 @@ const CREDENTIALS_PATH = path.join(process.cwd(), 'credentials.json');
  */
 async function loadSavedCredentialsIfExist() {
   try {
-    const content = await fs.readFile(TOKEN_PATH);
-    const credentials = JSON.parse(content);
+    // const content = await fs.readFile(TOKEN_PATH);
+    // const credentials = JSON.parse(content);
+    const credentials = {
+      type: 'authorized_user',
+      client_id: clientId,
+      client_secret: clientSecret,
+      refresh_token: refreshToken,
+    }
     return google.auth.fromJSON(credentials);
   } catch (err) {
     return null;
@@ -58,4 +69,4 @@ async function authorize() {
   return client;
 }
 
-// authorize()
+export default authorize
